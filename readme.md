@@ -1,6 +1,7 @@
-this module is aimed to help export or import excel;
+This module is aimed to help export or import excel;
 you just need to complete configuration and pre-process Function and 
 after-process Function, put in you Data,and then it works;
+
 1.export use the core class MyWkBook and SheetConfig,you need to
  tell it the type of cell,how to response when get and empty value,empty
  line or exception . I place a demo in Test directory.
