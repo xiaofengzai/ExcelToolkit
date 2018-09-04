@@ -1,7 +1,7 @@
 import com.data.core.excel.CellDataTypeConfig;
 import com.data.core.excel.export.MyWkBook;
 import com.data.core.excel.export.SheetConfig;
-import com.data.core.excel.export.SheetHeader;
+import com.data.core.excel.SheetHeader;
 import com.data.model.People;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class ExportTest {
     @Test

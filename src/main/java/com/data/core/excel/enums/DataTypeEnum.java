@@ -1,11 +1,10 @@
-package com.data.core.excel;
+package com.data.core.excel.enums;
 
-public enum  DataTypeEnum implements BaseEnum<Integer>{
+public enum  DataTypeEnum implements BaseEnum<Integer> {
     STRING(1,"字符串",StringActionTypeEnum.class),
     NUMBER(2,"数值",NumberActionTypeEnum.class),
     TIME(3,"时间",TimeFormatTypeEnum.class),
     BOOLEAN(4,"布尔",BooleanTypeEnum.class);
-    ;
     private Integer value;
     private String name;
     private Class<?> clazz;

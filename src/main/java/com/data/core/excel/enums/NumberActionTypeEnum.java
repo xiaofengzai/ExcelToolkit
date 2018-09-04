@@ -1,4 +1,4 @@
-package com.data.core.excel;
+package com.data.core.excel.enums;
 
 public enum NumberActionTypeEnum implements BaseEnum<Integer> {
     Plain(1,"原样输出"),

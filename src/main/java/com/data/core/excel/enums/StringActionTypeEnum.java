@@ -1,4 +1,4 @@
-package com.data.core.excel;
+package com.data.core.excel.enums;
 
 public enum StringActionTypeEnum implements BaseEnum<Integer> {
     DEFAULT(1,"原始输出");

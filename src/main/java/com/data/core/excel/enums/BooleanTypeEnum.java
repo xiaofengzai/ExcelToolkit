@@ -1,7 +1,8 @@
-package com.data.core.excel;
+package com.data.core.excel.enums;
+
+import com.data.core.excel.DataProcessException;
 
 public enum BooleanTypeEnum implements BaseEnum<Integer>{
-    NotChange(0,null),
     YesOrNot(1,new String[]{"是","否"}),
     HasOrNo(2,new String[]{"有","无"}),
     YOrN(3,new String[]{"Y","N"}),
@@ -29,14 +30,17 @@ public enum BooleanTypeEnum implements BaseEnum<Integer>{
     public Object getEnumByLabel(String label){
         BooleanTypeEnum[] booleanTypes= BooleanTypeEnum.values();
         for (BooleanTypeEnum item:booleanTypes) {
-            if(item.getName()==null)
-                return label;
             if(item.getName()[0].equals(label)){
                 return true;
             }else if(item.getName()[1].equals(label)){
                 return false;
             }
         }
-        throw new DataProcessException("布尔值不正确");
+        try {
+            Boolean result=Boolean.valueOf(label);
+            return result;
+        }catch (Exception e) {
+            throw new DataProcessException("布尔值不正确");
+        }
     }
 }

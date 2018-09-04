@@ -1,6 +1,6 @@
-package com.data.core.excel;
+package com.data.core.excel.enums;
 
-public enum EmptyActionTypeEnum implements BaseEnum<Integer>{
+public enum EmptyActionTypeEnum implements BaseEnum<Integer> {
     Error(1,"报错"),
     FillDefault(2,"填充默认值");
     private Integer value;

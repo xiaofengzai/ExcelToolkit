@@ -1,6 +1,6 @@
-package com.data.core.excel;
+package com.data.core.excel.enums;
 
-public enum TimeFormatTypeEnum  implements BaseEnum<Integer>{
+public enum TimeFormatTypeEnum  implements BaseEnum<Integer> {
     SecondCN(1,"yyyy年MM月dd日 HH:mm:ss"),
     MinuteCN(2,"yyyy年MM月dd日 HH:mm"),
     DefaultCN(3,"yyyy年MM月dd日"),

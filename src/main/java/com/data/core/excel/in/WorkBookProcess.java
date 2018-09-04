@@ -2,7 +2,11 @@ package com.data.core.excel.in;
 
 import com.alibaba.fastjson.JSONObject;
 import com.data.core.excel.*;
-import com.data.core.excel.export.SheetHeader;
+import com.data.core.excel.SheetHeader;
+import com.data.core.excel.enums.DataTypeEnum;
+import com.data.core.excel.utils.ConfigUtil;
+import com.data.core.excel.utils.EnumHelper;
+import com.data.core.excel.utils.FileUtil;
 import lombok.Data;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -16,9 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 /**
  * Created by szty on 2018/9/3.
@@ -103,7 +105,7 @@ public class WorkBookProcess {
                     }else
                         return null;
                 }
-                DataTypeEnum dataTypeEnum=EnumHelper.getEnum(DataTypeEnum.class,config.getDataType());
+                DataTypeEnum dataTypeEnum= EnumHelper.getEnum(DataTypeEnum.class,config.getDataType());
                 Cell cell=row.getCell(i);
                 if(cell==null || cell.getCellType()==Cell.CELL_TYPE_BLANK || (cell.getCellType()==Cell.CELL_TYPE_STRING && ConfigUtil.emptyObject(cell.getStringCellValue()))){
                     emptyCols++;
