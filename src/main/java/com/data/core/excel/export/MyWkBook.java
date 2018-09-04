@@ -23,14 +23,14 @@ import java.util.function.Consumer;
 public class MyWkBook {
     private Workbook workbook;
     private SheetConfig sheetConfig;
-    public  <T,R> void addData(List<T> list, Consumer<List<T>> before){
+    public  <T> void addData(List<T> list, Consumer<List<T>> before){
         if(before!=null){
              before.accept(list);
         }
          JSONArray array=new JSONArray((List<Object>) list);
         writeDataToSheet(array);
     }
-    public <T,R> void addData(List<T> list){
+    public <T> void addData(List<T> list){
         addData(list,null);
     }
 
