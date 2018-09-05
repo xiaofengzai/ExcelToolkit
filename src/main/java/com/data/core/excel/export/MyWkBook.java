@@ -3,7 +3,9 @@ package com.data.core.excel.export;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.data.core.excel.*;
+import com.data.core.excel.CellDataTypeConfig;
+import com.data.core.excel.DataProcessException;
+import com.data.core.excel.SheetHeader;
 import com.data.core.excel.utils.CollectionUtil;
 import com.data.core.excel.utils.ConfigUtil;
 import lombok.AllArgsConstructor;
@@ -12,7 +14,6 @@ import lombok.NoArgsConstructor;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
-
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -39,7 +40,6 @@ public class MyWkBook {
             validateAndInitHeader();
         }
         setSheetData(workbook.getSheet(sheetConfig.getSheetName()),jsonArray);
-
     }
 
     private   void setSheetData(Sheet sheet,JSONArray data) {
@@ -64,7 +64,6 @@ public class MyWkBook {
                     row.createCell(j).setCellValue(filterValue(jsonObject,cellDataTypeConfig).toString());
                 }
             }
-
         }
     }
 
@@ -88,8 +87,6 @@ public class MyWkBook {
 
     }
 
-
-
     private void validateAndInitHeader(){
         List<SheetHeader> headers=sheetConfig.getHeaders();
         List<CellDataTypeConfig> cellDataTypeConfigs =sheetConfig.getCellDataTypeConfigs();
@@ -100,28 +97,25 @@ public class MyWkBook {
         if(sheetConfig.getDataLabelsLength()>=cellDataTypeConfigs.size() && sheetConfig.getDataLabelsLength()-cellDataTypeConfigs.size()<2){
             Sheet sheet=workbook.createSheet(sheetConfig.getSheetName());
             sheet.setDefaultColumnWidth((short)15);
+            List<CellRangeAddress> cellRangeAddress=sheetConfig.getMergeRegions();
+            if(cellRangeAddress!=null){
+                cellRangeAddress.stream().forEach(item->{
+                    sheet.addMergedRegion(item);
+                });
+            }
             for(int i=0,len=headers.size();i<len;i++){
                 SheetHeader header=headers.get(i);
-                List<CellRangeAddress> cellRangeAddress=header.getMergeRegions();
-                if(cellRangeAddress!=null){
-                    cellRangeAddress.stream().forEach(item->{
-                        sheet.addMergedRegion(item);
-                    });
-                }
                 Row row = sheet.createRow(i);
                 String[] headerNames=header.getHeaderLabels();
-                for(int j=0,names=headerNames.length;j<names;j++){
+                for (int j=0;j<headerNames.length;j++){
                     Cell cell = row.createCell((short) j);
                     cell.setCellValue(headerNames[j]);
                     cell.setCellStyle(getCellStyle(workbook,header.getAlignType()));
-
                 }
             }
         } else
             throw new DataProcessException("表头配置与列数据类型配置不正确");
-
     }
-
     private CellStyle getCellStyle(Workbook wb, Integer alignType){
         Font font=wb.createFont();
         font.setColor(HSSFColor.BLACK.index);//HSSFColor.VIOLET.index //字体颜色

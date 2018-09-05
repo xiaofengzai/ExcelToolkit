@@ -9,6 +9,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -19,9 +20,19 @@ public class ExportTest {
         SheetConfig config=new SheetConfig();
         config.setHeaders(Arrays.asList(
                 new SheetHeader(
-                        new String[]{"no","name","age","phone","address","birthday"},1,null
+                        new String[]{"a","b","c","d"},1
+                ),
+                new SheetHeader(
+                        new String[]{"aa","bb","cd","dd","ee","ff","gg"},1
+                ),
+                new SheetHeader(
+                        new String[]{"no","name","age","phone","address","birthday"},1
                 )
         ));
+        config.addMergeRegions(new ArrayList(){{
+            add(new Integer[]{0,0,0,1});
+            add(new Integer[]{0,1,3,4});
+        }});
         config.setLineSize(1000);
         config.setSheetIndex(0);
         config.setCellDataTypeConfigs(Arrays.asList(
@@ -40,7 +51,7 @@ public class ExportTest {
 //        };
         myWkBook.addData(getPeople(),(List<People> list)->list.forEach(people -> {people.setAge(20);}));
         try {
-            myWkBook.getWorkbook().write(new FileOutputStream(new File("D://testConsumers.xlsx")));
+            myWkBook.getWorkbook().write(new FileOutputStream(new File("D://testConsumer01.xlsx")));
         } catch (IOException e) {
             e.printStackTrace();
         }
