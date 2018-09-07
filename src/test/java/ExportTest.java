@@ -19,22 +19,17 @@ public class ExportTest {
     public  void exportExcel() {
         SheetConfig config=new SheetConfig();
         config.setHeaders(Arrays.asList(
-                new SheetHeader(
-                        new String[]{"a","b","c","d"},1
+                new SheetHeader("a","b","c","d"
                 ),
-                new SheetHeader(
-                        new String[]{"aa","bb","cd","dd","ee","ff","gg"},1
+                new SheetHeader("aa","bb","ee","ff","gg"
                 ),
-                new SheetHeader(
-                        new String[]{"no","name","age","phone","address","birthday"},1
+                new SheetHeader("no","name","age","phone","address","birthday"
                 )
         ));
-        config.addMergeRegions(new ArrayList(){{
-            add(new Integer[]{0,0,0,1});
-            add(new Integer[]{0,1,3,4});
-        }});
+        config.addMergeRegions("project",0,0,0,1).addMergeRegions("---==",0,1,3,4);
         config.setLineSize(1000);
         config.setSheetIndex(0);
+        config.setRowMaxWidth(7);
         config.setCellDataTypeConfigs(Arrays.asList(
                 new CellDataTypeConfig("name",1,1,1,null),
                 new CellDataTypeConfig("age",2,2,1,"30"),

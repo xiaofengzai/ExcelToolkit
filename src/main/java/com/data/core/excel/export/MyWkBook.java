@@ -92,13 +92,15 @@ public class MyWkBook {
         List<CellDataTypeConfig> cellDataTypeConfigs =sheetConfig.getCellDataTypeConfigs();
         if(CollectionUtil.isEmpty(headers))
             throw new DataProcessException("请配置表头");
+        if(sheetConfig.getRowMaxWidth()==null)
+            throw new DataProcessException("Excel行的最大单元格数量");
         if(CollectionUtil.isEmpty(cellDataTypeConfigs))
             throw new DataProcessException("请配置列数据类型");
         if(sheetConfig.getDataLabelsLength()>=cellDataTypeConfigs.size() && sheetConfig.getDataLabelsLength()-cellDataTypeConfigs.size()<2){
             Sheet sheet=workbook.createSheet(sheetConfig.getSheetName());
             sheet.setDefaultColumnWidth((short)15);
             List<CellRangeAddress> cellRangeAddress=sheetConfig.getMergeRegions();
-            if(cellRangeAddress!=null){
+            if(!CollectionUtil.isEmpty(cellRangeAddress)){
                 cellRangeAddress.stream().forEach(item->{
                     sheet.addMergedRegion(item);
                 });
@@ -106,23 +108,23 @@ public class MyWkBook {
             for(int i=0,len=headers.size();i<len;i++){
                 SheetHeader header=headers.get(i);
                 Row row = sheet.createRow(i);
-                String[] headerNames=header.getHeaderLabels();
-                for (int j=0;j<headerNames.length;j++){
+                List<String> headerNames=header.getHeaderLabels();
+                Integer headNameLen=headerNames.size();
+                for (int j=0,rowWidth=sheetConfig.getRowMaxWidth();j<rowWidth;j++){
                     Cell cell = row.createCell((short) j);
-                    cell.setCellValue(headerNames[j]);
+                    cell.setCellValue(j>=headNameLen?"":headerNames.get(j));
                     cell.setCellStyle(getCellStyle(workbook,header.getAlignType()));
                 }
             }
         } else
             throw new DataProcessException("表头配置与列数据类型配置不正确");
     }
-    private CellStyle getCellStyle(Workbook wb, Integer alignType){
+    private CellStyle getCellStyle(Workbook wb, HorizontalAlignment alignType){
         Font font=wb.createFont();
         font.setColor(HSSFColor.BLACK.index);//HSSFColor.VIOLET.index //字体颜色
         font.setFontHeightInPoints((short)11);
         CellStyle style = wb.createCellStyle();
-        HorizontalAlignment horizontalAlignment=HorizontalAlignment.forInt(alignType);
-        style.setAlignment(horizontalAlignment);
+        style.setAlignment(alignType);
         style.setFont(font);
         return  style;
     }

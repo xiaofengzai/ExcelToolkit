@@ -1,7 +1,9 @@
 package com.data.core.excel.in;
 
 import com.alibaba.fastjson.JSONObject;
-import com.data.core.excel.*;
+import com.data.core.excel.CellDataTypeConfig;
+import com.data.core.excel.DataConstant;
+import com.data.core.excel.DataProcessException;
 import com.data.core.excel.SheetHeader;
 import com.data.core.excel.enums.DataTypeEnum;
 import com.data.core.excel.utils.ConfigUtil;
@@ -148,10 +150,10 @@ public class WorkBookProcess {
 
     public  void validateHeader(BufferedInputStream inputStream, Sheet sheet , List<SheetHeader> sheetHeaders){
         for (int index=0,length=sheetHeaders.size();index<length; index++) {
-            SheetHeader header=sheetHeaders.get(index);
+            List<String> labels=sheetHeaders.get(index).getHeaderLabels();
             Row row=sheet.getRow(index);
-            Integer headerLength=header.getHeaderLabels().length;
-            if(header==null || row==null || headerLength>(row.getLastCellNum()-row.getFirstCellNum())){
+            Integer headerLength=labels.size();
+            if(labels==null || row==null || headerLength>(row.getLastCellNum()-row.getFirstCellNum())){
                 closeInputStream(inputStream);
                 logger.severe("模板表头为空或表头不匹配");
                 throw new DataProcessException("模板格式不正确");
@@ -160,7 +162,7 @@ public class WorkBookProcess {
             for (int i=0;i<headerLength;i++){
                 headerCell=row.getCell(i);
                 try {
-                    if( !headerCell.getStringCellValue().equals(header.getHeaderLabels()[i])) {
+                    if( !headerCell.getStringCellValue().equals(labels.get(i))) {
                         closeInputStream(inputStream);
                         logger.severe("模板表头不匹配");
                         throw new DataProcessException("模板格式不正确");

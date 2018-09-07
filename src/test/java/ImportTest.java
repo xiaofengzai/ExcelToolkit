@@ -19,7 +19,7 @@ public class ImportTest {
     public  void importExcel() throws FileNotFoundException {
         ExcelImportConfig excelImportConfig=
                 new ExcelImportConfig("abcd","ddd").addHeaders(Arrays.asList(
-        new SheetHeader(new String[]{"编号","门店ID","门店名称","省份","城市","地区","具体地址","设备ID"},null)
+        new SheetHeader("编号","门店ID","门店名称","省份","城市","地区","具体地址","设备ID")
         )).addCellDataTypeConfigs(
                 Arrays.asList(
                         new CellDataTypeConfig("no",2, DataTypeEnum.NUMBER.getValue(),1,"0"),
